@@ -260,7 +260,7 @@ h3 {
   border-radius: 28px;
   background: #fff;
   box-shadow: var(--shadow);
-  overflow: hidden;
+  overflow: visible;
 }
 
 .feature-grid {
