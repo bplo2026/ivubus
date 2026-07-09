@@ -22,6 +22,7 @@
     <nav class="nav" aria-label="Nawigacja główna">
       <a href="#rezerwacja">Rezerwacja</a>
       <a href="#flota">Busy</a>
+      <a href="#galeria">Galeria</a>
       <a href="#cennik">Cennik</a>
       <a href="#kontakt">Kontakt</a>
     </nav>
@@ -87,6 +88,45 @@
           <h3>Łączność w trasie</h3>
           <p>App-Connect, Apple CarPlay i Android Auto ułatwiają nawigację oraz obsługę telefonu w podróży.</p>
         </article>
+      </div>
+
+      <div id="galeria" class="gallery-block">
+        <div class="gallery-heading">
+          <div>
+            <p class="eyebrow">Galeria</p>
+            <h3>Zobacz busa z zewnątrz i od środka</h3>
+          </div>
+          <p>Przestronne wnętrze, nowoczesny kokpit i wygodna wersja Long XL przygotowana na dłuższe trasy.</p>
+        </div>
+
+        <div class="gallery-shell">
+          <button class="gallery-arrow gallery-arrow-left" type="button" aria-label="Poprzednie zdjęcie" data-gallery-prev>‹</button>
+
+          <div class="gallery-track" id="busGallery">
+            <figure class="gallery-slide">
+              <img src="assets/bus-gallery-1.jpg" alt="Ford Transit Custom Long XL z zewnątrz">
+            </figure>
+            <figure class="gallery-slide">
+              <img src="assets/bus-gallery-2.jpg" alt="Biały Ford Transit Custom Long XL na placu">
+            </figure>
+            <figure class="gallery-slide">
+              <img src="assets/bus-gallery-3.jpg" alt="Ford Transit Custom Long XL od przodu">
+            </figure>
+            <figure class="gallery-slide">
+              <img src="assets/bus-gallery-4.jpg" alt="Kokpit Ford Transit Custom Long XL">
+            </figure>
+            <figure class="gallery-slide">
+              <img src="assets/bus-gallery-5.jpg" alt="Wnętrze busa Ford Transit Custom Long XL">
+            </figure>
+            <figure class="gallery-slide">
+              <img src="assets/bus-gallery-6.jpg" alt="Kabina kierowcy Ford Transit Custom">
+            </figure>
+          </div>
+
+          <button class="gallery-arrow gallery-arrow-right" type="button" aria-label="Następne zdjęcie" data-gallery-next>›</button>
+        </div>
+
+        <div class="gallery-dots" id="busGalleryDots" aria-label="Nawigacja galerii"></div>
       </div>
     </section>
 
@@ -194,6 +234,106 @@
 
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+
+  <script>
+    (function () {
+      const track = document.getElementById('busGallery');
+      const dotsWrap = document.getElementById('busGalleryDots');
+
+      if (!track || !dotsWrap) return;
+
+      const slides = Array.from(track.querySelectorAll('.gallery-slide'));
+      const prev = document.querySelector('[data-gallery-prev]');
+      const next = document.querySelector('[data-gallery-next]');
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      let index = 0;
+      let autoplay = null;
+      let scrollTimer = null;
+
+      slides.forEach(function (_, i) {
+        const dot = document.createElement('button');
+        dot.type = 'button';
+        dot.setAttribute('aria-label', 'Pokaż zdjęcie ' + (i + 1));
+        dot.addEventListener('click', function () {
+          goTo(i);
+          restart();
+        });
+        dotsWrap.appendChild(dot);
+      });
+
+      const dots = Array.from(dotsWrap.querySelectorAll('button'));
+
+      function updateDots() {
+        dots.forEach(function (dot, i) {
+          dot.classList.toggle('active', i === index);
+        });
+      }
+
+      function goTo(nextIndex) {
+        index = (nextIndex + slides.length) % slides.length;
+        track.scrollTo({
+          left: index * track.clientWidth,
+          behavior: prefersReducedMotion ? 'auto' : 'smooth'
+        });
+        updateDots();
+      }
+
+      function start() {
+        if (prefersReducedMotion) return;
+        stop();
+        autoplay = setInterval(function () {
+          goTo(index + 1);
+        }, 4500);
+      }
+
+      function stop() {
+        if (autoplay) {
+          clearInterval(autoplay);
+          autoplay = null;
+        }
+      }
+
+      function restart() {
+        stop();
+        start();
+      }
+
+      if (prev) {
+        prev.addEventListener('click', function () {
+          goTo(index - 1);
+          restart();
+        });
+      }
+
+      if (next) {
+        next.addEventListener('click', function () {
+          goTo(index + 1);
+          restart();
+        });
+      }
+
+      track.addEventListener('scroll', function () {
+        clearTimeout(scrollTimer);
+        scrollTimer = setTimeout(function () {
+          index = Math.round(track.scrollLeft / track.clientWidth);
+          updateDots();
+        }, 80);
+      });
+
+      track.addEventListener('mouseenter', stop);
+      track.addEventListener('mouseleave', start);
+      track.addEventListener('touchstart', stop, { passive: true });
+      track.addEventListener('touchend', start, { passive: true });
+
+      window.addEventListener('resize', function () {
+        goTo(index);
+      });
+
+      updateDots();
+      start();
+    })();
   </script>
 
   <!-- Widget EasyRent. Dla innego samochodu wygeneruj nowy kod w panelu EasyRent i podmień ID oraz carID. -->
