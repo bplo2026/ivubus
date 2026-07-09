@@ -441,6 +441,123 @@ h3 {
   font-weight: 800;
 }
 
+
+.gallery-block {
+  max-width: 1180px;
+  margin: 42px auto 0;
+  scroll-margin-top: 96px;
+}
+
+.gallery-heading {
+  display: grid;
+  grid-template-columns: minmax(0, .9fr) minmax(280px, .7fr);
+  align-items: end;
+  gap: 24px;
+  margin-bottom: 18px;
+}
+
+.gallery-heading h3 {
+  margin-bottom: 0;
+  font-size: clamp(26px, 3vw, 38px);
+  line-height: 1.06;
+  letter-spacing: -.04em;
+}
+
+.gallery-heading p:not(.eyebrow) {
+  margin: 0;
+  color: var(--muted);
+}
+
+.gallery-shell {
+  position: relative;
+  border-radius: 30px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 24px 70px rgba(16, 24, 40, .14);
+}
+
+.gallery-track {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+
+.gallery-track::-webkit-scrollbar {
+  display: none;
+}
+
+.gallery-slide {
+  flex: 0 0 100%;
+  margin: 0;
+  scroll-snap-align: center;
+  background: #fff;
+}
+
+.gallery-slide img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.gallery-arrow {
+  position: absolute;
+  top: 50%;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border: 1px solid rgba(255, 255, 255, .7);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .88);
+  color: var(--ink);
+  font-size: 34px;
+  line-height: 1;
+  cursor: pointer;
+  transform: translateY(-50%);
+  box-shadow: 0 12px 30px rgba(16, 24, 40, .18);
+  transition: transform .2s ease, background .2s ease;
+}
+
+.gallery-arrow:hover {
+  background: #fff;
+  transform: translateY(-50%) scale(1.04);
+}
+
+.gallery-arrow-left {
+  left: 18px;
+}
+
+.gallery-arrow-right {
+  right: 18px;
+}
+
+.gallery-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.gallery-dots button {
+  width: 9px;
+  height: 9px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(24, 79, 234, .22);
+  cursor: pointer;
+  transition: width .2s ease, background .2s ease;
+}
+
+.gallery-dots button.active {
+  width: 28px;
+  background: var(--blue);
+}
+
 @media (max-width: 960px) {
   .nav {
     display: none;
@@ -470,6 +587,28 @@ h3 {
 
   #widget-easyrent-1565 {
     min-width: 560px;
+  }
+
+  .gallery-heading {
+    grid-template-columns: 1fr;
+  }
+
+  .gallery-slide img {
+    aspect-ratio: 4 / 3;
+  }
+
+  .gallery-arrow {
+    width: 40px;
+    height: 40px;
+    font-size: 30px;
+  }
+
+  .gallery-arrow-left {
+    left: 10px;
+  }
+
+  .gallery-arrow-right {
+    right: 10px;
   }
 }
 
